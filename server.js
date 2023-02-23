@@ -104,6 +104,44 @@ function groupDataByStreetNumber(data) {
   });
   return sortedGroups;
 }
+app.get('/firstname', function(req, res){
+  connection.query('SELECT * FROM mytable', function(error, results, fields){
+      if (error) throw error;
+      var data = groupDataByOwner(results);
+      res.send(data);
+  });
+});
+function groupDataByOwner(data) {
+  const groupedData = {};
+  data.forEach(row => {
+    const firstName = row.owner.split(' ')[0]; // Extract first name
+    if (!groupedData[firstName]) {
+      groupedData[firstName] = [];
+    }
+    groupedData[firstName].push(row);
+  });
+
+  // Sort the groups by first name
+  const sortedGroups = Object.keys(groupedData).sort();
+
+  // Sort the rows within each group by last name
+  for (const group in groupedData) {
+    groupedData[group].sort((a, b) => {
+      const lastA = a.owner.split(' ')[1];
+      const lastB = b.owner.split(' ')[1];
+      return lastA.localeCompare(lastB);
+    });
+  }
+
+  // Build the final sorted data array
+  const sortedData = [];
+  sortedGroups.forEach(group => {
+    sortedData.push(...groupedData[group]);
+  });
+
+  return sortedData;
+}
+
 
 
 app.listen(3000, function(){
