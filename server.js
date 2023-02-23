@@ -1,6 +1,6 @@
 // Import the mysql library 
 const express = require('express')
-const mysql = require('mysql');
+const mysql = require('mysql2');
 
 const app = express();
 
@@ -11,15 +11,22 @@ const connection = mysql.createConnection({
     user: 'root',
     password: 'Carmel360',
     database: 'parcel_db'
-},
-console.log('Connected to the parcel_db databse')
-);
+});
 
-app.get('/parcels', function(req, res){
+app.get('/', function(req, res){
     connection.query('SELECT * FROM mytable', function(error, results, fields){
         if (error) throw error;
         res.send(results);
+        console.log('works')
     });
+});
+
+app.get('/', function(req, res){
+  connection.query('SELECT * FROM mytable', function(error, results, fields){
+      if (error) throw error;
+      console.log(results);
+      // res.send('Table data printed in console')
+  });
 });
 
 app.listen(3000, function(){
