@@ -78,14 +78,32 @@ function groupDataByStreetName(data) {
   return sortedData;
 }
 
-// app.get('/streetnumber', function(req, res){
-//   connection.query('SELECT * FROM mytable ORDER BY CAST(SUBSTRING_INDEX(address, " ", 1) AS UNSIGNED)', function(error, results, fields){
-//       if (error) throw error;
-//       var data = groupDataByStreetNumber(results);
-//       res.send(data);
-//   });
-// });
+app.get('/streetnumber', function(req, res){
+  connection.query('SELECT * FROM mytable ORDER BY CAST(SUBSTRING_INDEX(address, " ", 1) AS UNSIGNED)', function(error, results, fields){
+      if (error) throw error;
+      var data = groupDataByStreetNumber(results);
+      res.send(data);
+  });
+});
 
+function groupDataByStreetNumber(data) {
+  const groups = {};
+  for (let i = 0; i < data.length; i++) {
+    const address = data[i].address;
+    if (!address) continue;
+    const streetNumber = parseInt(address.split(' ')[0]);
+    if (isNaN(streetNumber)) continue;
+    if (!groups[streetNumber]) {
+      groups[streetNumber] = [];
+    }
+    groups[streetNumber].push(data[i]);
+  }
+  const sortedGroups = {};
+  Object.keys(groups).sort((a, b) => a - b).forEach(key => {
+    sortedGroups[key] = groups[key];
+  });
+  return sortedGroups;
+}
 
 
 app.listen(3000, function(){
