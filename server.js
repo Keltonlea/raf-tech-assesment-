@@ -1,7 +1,6 @@
 const express = require('express');
 const mysql = require('mysql2');
 const { engine } = require('express-handlebars');
-const Handlebars = require('handlebars');
 
 
 
