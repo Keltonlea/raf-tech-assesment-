@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Parcel Data</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="./public/js/streetnamebutton.js"></script>
+
+</head>
+<body>
+  <div class="container-fluid">
+    <h1>Parcel Data</h1>
+    <table class="table table-striped">
+      <thead>
+			<tr>
+		 <th>Pin</th>
+         <th>Address</th>
+          <th>Owner</th>
+          <th>Market Value</th>
+          <th>Sale Date</th>
+          <th>Sale Price</th>
+          <th>Link</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#each data}}
+			<tr>
+			
+				
+				<td>{{this.pin}}</td>
+                <td>{{this.address}}</td>
+				<td>{{this.owner}}</td>
+				<td>{{this.market_value}}</td>
+				<td>{{this.sale_date}}</td>
+				<td>{{this.sale_price}}</td>
+				<td>{{this.link}}</td>
+			</tr>
+			{{/each}}
+		</tbody>
+	</table>
+  </div>
+</body>
+</html>

@@ -5,6 +5,9 @@ const { engine } = require('express-handlebars');
 const app = express();
 const port = 3000;
 
+app.use(express.static('public'));
+
+
 
 //Create a connection to the mysql server
 
@@ -23,9 +26,11 @@ app.set('view engine', 'hbs');
 app.get('/', (req, res) => {
   connection.query('SELECT * FROM mytable', (error, results, fields) => {
     if (error) throw error;
-    res.render('home', { parcels: results });
+    res.render('main', { parcels: results });
   });
 });
+
+
 
 
 
@@ -35,12 +40,20 @@ app.get('/streetname', function(req, res){
   connection.query('SELECT * FROM mytable ORDER BY address', function(error, results, fields){
       if (error) throw error;
       var data = groupDataByStreetName(results);
-      res.send(data);
+      res.render('streetname', { data });
+
+      // res.send(data);
   });
 });
+
 function groupDataByStreetName(data) {
   // Create an object to hold the grouped data
   const groupedData = {};
+
+  // Check if data is an array
+  if (!Array.isArray(data)) {
+    return groupedData;
+  }
 
   // Loop through each row of data
   data.forEach(row => {
@@ -64,6 +77,8 @@ function groupDataByStreetName(data) {
 
   return sortedData;
 }
+
+
 
 app.get('/streetnumber', function(req, res){
   connection.query('SELECT * FROM mytable ORDER BY CAST(SUBSTRING_INDEX(address, " ", 1) AS UNSIGNED)', function(error, results, fields){
@@ -91,43 +106,56 @@ function groupDataByStreetNumber(data) {
   });
   return sortedGroups;
 }
-app.get('/firstname', function(req, res){
-  connection.query('SELECT * FROM mytable', function(error, results, fields){
-      if (error) throw error;
-      var data = groupDataByOwner(results);
-      res.send(data);
+
+
+
+app.get('/firstname', function(req, res) {
+  connection.query('SELECT * FROM mytable ORDER BY owner', function(error, results, fields) {
+    if (error) throw error;
+    const data = groupDataByOwner(results);
+    res.render('firstname', {data: data}); // pass the data object to the view
   });
 });
-function groupDataByOwner(data) {
-  const groupedData = {};
-  data.forEach(row => {
-    const firstName = row.owner.split(' ')[0]; // Extract first name
-    if (!groupedData[firstName]) {
-      groupedData[firstName] = [];
+
+function groupDataByOwner(results) {
+  const data = {};
+  for (let i = 0; i < results.length; i++) {
+    const row = results[i];
+    if (!row.owner) { // check if owner field is null or undefined
+      continue; // skip this row
     }
-    groupedData[firstName].push(row);
-  });
-
-  // Sort the groups by first name
-  const sortedGroups = Object.keys(groupedData).sort();
-
-  // Sort the rows within each group by last name
-  for (const group in groupedData) {
-    groupedData[group].sort((a, b) => {
-      const lastA = a.owner.split(' ')[1];
-      const lastB = b.owner.split(' ')[1];
-      return lastA.localeCompare(lastB);
-    });
+    const firstName = row.owner.split(",")[1]?.trim(); // use optional chaining to avoid error if split() returns undefined
+    if (!firstName) {
+      continue; // skip this row if firstName is null, undefined or an empty string
+    }
+    if (!data[firstName]) {
+      data[firstName] = [];
+    }
+    data[firstName].push(row);
   }
-
-  // Build the final sorted data array
-  const sortedData = [];
-  sortedGroups.forEach(group => {
-    sortedData.push(...groupedData[group]);
-  });
-
-  return sortedData;
+  return data;
 }
+
+
+// app.get('/firstname', function(req, res){
+//   connection.query('SELECT * FROM mytable ORDER BY owner', function(error, results, fields){
+//       if (error) throw error;
+//       var data = groupDataByOwner(results);
+//       console.log(data); // add this line to see what data is being passed to the template
+//       res.render('firstname', { data });
+//   });
+// });
+
+
+
+
+
+
+
+
+
+
+
 
 
 // Start the server

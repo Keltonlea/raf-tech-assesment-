@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Parcel Data</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container-fluid">
+    <h1>Parcel Data</h1>
+    <table class="table table-striped">
+
+
+  <thead>
+    <tr>
+      <th>Pin</th>
+      <th>Address</th>
+      <th>Owner</th>
+      <th>Market Value</th>
+      <th>Sale Date</th>
+      <th>Sale Price</th>
+      <th>Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each data}}
+      {{#each this}}
+        <tr>
+          <td>{{ pin }}</td>
+          <td>{{ address }}</td>
+          <td>{{ owner }}</td>
+          <td>{{ market_value }}</td>
+          <td>{{ sale_date }}</td>
+          <td>{{ sale_price }}</td>
+          <td>{{ link }}</td>
+        </tr>
+      {{/each}}
+    {{/each}}
+  </tbody>
+  
+
