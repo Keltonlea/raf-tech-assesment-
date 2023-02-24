@@ -26,7 +26,7 @@ app.set('view engine', 'hbs');
 app.get('/', (req, res) => {
   connection.query('SELECT * FROM mytable', (error, results, fields) => {
     if (error) throw error;
-    res.render('main', { parcels: results });
+    res.render('home', { parcels: results });
   });
 });
 
