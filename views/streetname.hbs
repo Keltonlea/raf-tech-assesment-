@@ -28,6 +28,7 @@
       <th>Sale Date</th>
       <th>Sale Price</th>
       <th>Link</th>
+      <th>Map Link</th>
     </tr>
   </thead>
   <tbody>
@@ -41,6 +42,8 @@
           <td>{{ sale_date }}</td>
           <td>{{ sale_price }}</td>
           <td>{{ link }}</td>
+          <td><a href="/map?address={{this.address}}">{{this.address}}</a></td>
+
         </tr>
       {{/each}}
     {{/each}}
