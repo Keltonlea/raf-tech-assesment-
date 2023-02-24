@@ -25,11 +25,24 @@ app.set('view engine', 'hbs');
 
 
 
+
+
 // Render the home page with the parcel data
 app.get('/', (req, res) => {
   connection.query('SELECT * FROM mytable', (error, results, fields) => {
-    if (error) throw error;
-    res.render('home', { parcels: results });
+    if (error) {
+      console.error('Error retrieving data from database: ' + error.stack);
+      res.status(500).send('Internal server error');
+      return;
+  }
+  // Add maplink column to the result
+const parcels = results.map((parcel) => {
+  const address = parcel.address;
+  const api_key = 'AIzaSyBitp-D5fzf3sFeHVQ8idSV62EFjf6y5AM'
+  const maplink = `https://www.google.com/maps/embed/v1/place?key=${api_key}&q=${encodeURIComponent(address)}`
+  return { ...parcel, maplink};
+});
+res.render('home', {parcels});
   });
 });
 
