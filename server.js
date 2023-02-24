@@ -1,8 +1,13 @@
 const express = require('express');
 const mysql = require('mysql2');
 const { engine } = require('express-handlebars');
+const Handlebars = require('handlebars');
+
+
+
 
 const app = express();
+
 const port = 3000;
 
 app.use(express.static('public'));
@@ -10,6 +15,8 @@ app.use(express.static('public'));
 
 
 //Create a connection to the mysql server
+
+
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -35,16 +42,30 @@ app.get('/', (req, res) => {
       res.status(500).send('Internal server error');
       return;
   }
-  // Add maplink column to the result
-const parcels = results.map((parcel) => {
-  const address = parcel.address;
-  const api_key = 'AIzaSyBitp-D5fzf3sFeHVQ8idSV62EFjf6y5AM'
-  const maplink = `https://www.google.com/maps/embed/v1/place?key=${api_key}&q=${encodeURIComponent(address)}`
-  return { ...parcel, maplink};
-});
-res.render('home', {parcels});
+
+
+ // Add maplink column to the result
+    const parcels = results.map((parcel) => {
+      const address = parcel.address;
+      const api_key = 'AIzaSyBitp-D5fzf3sFeHVQ8idSV62EFjf6y5AM'
+      const maplink = `https://www.google.com/maps/embed/v1/place?key=${api_key}&q=${address}, Mazama, WA`
+      return { ...parcel, maplink};
+    });
+    res.render('home', {parcels});
   });
 });
+
+app.get('/map', (req, res) => {
+  const address = req.query.address;
+  const address_with_city_state = `${address}, Mazama, WA`;
+  const api_key = 'AIzaSyBitp-D5fzf3sFeHVQ8idSV62EFjf6y5AM'; 
+  const maplink = `https://www.google.com/maps/embed/v1/place?key=${api_key}&q=${address_with_city_state}`
+  res.render('map', { maplink });
+});
+
+
+
+
 
 // Render table by street name 
 
@@ -64,6 +85,7 @@ function groupDataByStreetName(data) {
   if (!Array.isArray(data)) {
     return groupedData;
   }
+
 
   // Loop through each row of data
   data.forEach(row => {
