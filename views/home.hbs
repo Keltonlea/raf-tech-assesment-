@@ -33,16 +33,18 @@
       </thead>
       <tbody>
         {{#each parcels}}
+        {{#if this.pin}}
           <tr>
-            <td>{{pin}}</td>
-            <td>{{address}}</td>
-            <td>{{owner}}</td>
-            <td>{{market_value}}</td>
-            <td>{{sale_date}}</td>
-            <td>{{sale_price}}</td>
-            <td>{{link}}</td>
+            <td>{{this.pin}}</td>
+            <td>{{this.address}}</td>
+            <td>{{this.owner}}</td>
+            <td>{{this.market_value}}</td>
+            <td>{{this.sale_date}}</td>
+            <td>{{this.sale_price}}</td>
+            <td>{{this.link}}</td>
 
           </tr>
+          {{/if}}
         {{/each}}
       </tbody>
     </table>
