@@ -1,7 +1,7 @@
 # Parcel Data Sorter
 
 ## Description 
-This project is a full stack web application that allows a user to view a list of data and sort that data by first name, or by street name. The user can also click a link and view each address on googlemaps. 
+This project is a full stack web application that allows a user can then click buttons to sort the data by street name or by first name. The user can also click a link within the table to view each address in googlemaps. 
 
 ## Table of Contents
 * [Installation](#installation)
