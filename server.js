@@ -1,9 +1,10 @@
-// Import the mysql library 
-const express = require('express')
+const express = require('express');
 const mysql = require('mysql2');
-const fs = require ('fs')
+const { engine } = require('express-handlebars');
 
 const app = express();
+const port = 3000;
+
 
 //Create a connection to the mysql server
 
@@ -14,36 +15,22 @@ const connection = mysql.createConnection({
     database: 'parcel_db'
 });
 
-app.get('/', function(req, res){
-    connection.query('SELECT * FROM mytable', function(error, results, fields){
-        if (error) throw error;
-        res.send(results);
-        console.log('works')
-    });
+// Set up Handlebars as the template engine
+app.engine('handlebars', engine({ extname: '.hbs', defaultLayout: "main"}));
+app.set('view engine', 'hbs');
+
+// Render the home page with the parcel data
+app.get('/', (req, res) => {
+  connection.query('SELECT * FROM mytable', (error, results, fields) => {
+    if (error) throw error;
+    res.render('home', { parcels: results });
+  });
 });
 
 
 
 
 
-// app.get('/streetname', function(req, res) {
-//   fs.readFile('/Users/keltonLeach/Documents/assessments/raf-tech-assessment/db/Parcels.txt', 'utf8', function(err, data) {
-//     if (err) throw err;
-//     let dataArray = data.split('\n');
-//     let sortedArray = dataArray.sort(function(a, b) {
-//       let streetA = a.split('|')[1].toUpperCase(); // get street name from first pipe-separated value and convert to uppercase
-//       let streetB = b.split('|')[1].toUpperCase(); // get street name from first pipe-separated value and convert to uppercase
-//       if (streetA < streetB) {
-//         return -1;
-//       }
-//       if (streetA > streetB) {
-//         return 1;
-//       }
-//       return 0;
-//     });
-//     res.send(sortedArray);
-//   });
-// });
 app.get('/streetname', function(req, res){
   connection.query('SELECT * FROM mytable ORDER BY address', function(error, results, fields){
       if (error) throw error;
@@ -143,7 +130,7 @@ function groupDataByOwner(data) {
 }
 
 
-
-app.listen(3000, function(){
-    console.log('Server listening on port 3000')
+// Start the server
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
 });
