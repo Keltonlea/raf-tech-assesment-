@@ -22,6 +22,9 @@ const connection = mysql.createConnection({
 app.engine('handlebars', engine({ extname: '.hbs', defaultLayout: "main"}));
 app.set('view engine', 'hbs');
 
+
+
+
 // Render the home page with the parcel data
 app.get('/', (req, res) => {
   connection.query('SELECT * FROM mytable', (error, results, fields) => {
@@ -30,7 +33,7 @@ app.get('/', (req, res) => {
   });
 });
 
-
+// Render table by street name 
 
 app.get('/streetname', function(req, res){
   connection.query('SELECT * FROM mytable ORDER BY address', function(error, results, fields){
@@ -72,7 +75,7 @@ function groupDataByStreetName(data) {
   return sortedData;
 }
 
-
+// If we want to add street number, this renders not on the table, but can be changed to do so
 
 // app.get('/streetnumber', function(req, res){
 //   connection.query('SELECT * FROM mytable ORDER BY CAST(SUBSTRING_INDEX(address, " ", 1) AS UNSIGNED)', function(error, results, fields){
@@ -102,7 +105,7 @@ function groupDataByStreetName(data) {
 // }
 
 
-
+// Render table to sort by first name 
 app.get('/firstname', function(req, res) {
   connection.query('SELECT * FROM mytable ORDER BY owner', function(error, results, fields) {
     if (error) throw error;
@@ -120,11 +123,11 @@ function groupDataByOwner(results) {
     }
     const commaIndex = row.owner.indexOf(",");
     if (commaIndex === -1) { // check if comma is not found in owner field
-      continue; // skip this row
+      continue; 
     }
     const firstName = row.owner.substring(commaIndex + 1).trim();
     if (!firstName) {
-      continue; // skip this row if firstName is null, undefined or an empty string
+      continue; 
     }
     if (!data[firstName]) {
       data[firstName] = [];

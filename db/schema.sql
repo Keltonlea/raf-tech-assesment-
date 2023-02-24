@@ -5,7 +5,7 @@ USE parcel_db;
 DROP TABLE mytable;
 
 CREATE TABLE  mytable (
-     pin INT(10),
+  pin INT(10),
   address VARCHAR(255),
   owner VARCHAR(255),
   market_value DECIMAL(10,2),
