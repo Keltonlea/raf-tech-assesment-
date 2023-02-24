@@ -32,17 +32,11 @@ app.get('/', (req, res) => {
 
 
 
-
-
-
-
 app.get('/streetname', function(req, res){
   connection.query('SELECT * FROM mytable ORDER BY address', function(error, results, fields){
       if (error) throw error;
       var data = groupDataByStreetName(results);
       res.render('streetname', { data });
-
-      // res.send(data);
   });
 });
 
@@ -80,32 +74,32 @@ function groupDataByStreetName(data) {
 
 
 
-app.get('/streetnumber', function(req, res){
-  connection.query('SELECT * FROM mytable ORDER BY CAST(SUBSTRING_INDEX(address, " ", 1) AS UNSIGNED)', function(error, results, fields){
-      if (error) throw error;
-      var data = groupDataByStreetNumber(results);
-      res.send(data);
-  });
-});
+// app.get('/streetnumber', function(req, res){
+//   connection.query('SELECT * FROM mytable ORDER BY CAST(SUBSTRING_INDEX(address, " ", 1) AS UNSIGNED)', function(error, results, fields){
+//       if (error) throw error;
+//       var data = groupDataByStreetNumber(results);
+//       res.send(data);
+//   });
+// });
 
-function groupDataByStreetNumber(data) {
-  const groups = {};
-  for (let i = 0; i < data.length; i++) {
-    const address = data[i].address;
-    if (!address) continue;
-    const streetNumber = parseInt(address.split(' ')[0]);
-    if (isNaN(streetNumber)) continue;
-    if (!groups[streetNumber]) {
-      groups[streetNumber] = [];
-    }
-    groups[streetNumber].push(data[i]);
-  }
-  const sortedGroups = {};
-  Object.keys(groups).sort((a, b) => a - b).forEach(key => {
-    sortedGroups[key] = groups[key];
-  });
-  return sortedGroups;
-}
+// function groupDataByStreetNumber(data) {
+//   const groups = {};
+//   for (let i = 0; i < data.length; i++) {
+//     const address = data[i].address;
+//     if (!address) continue;
+//     const streetNumber = parseInt(address.split(' ')[0]);
+//     if (isNaN(streetNumber)) continue;
+//     if (!groups[streetNumber]) {
+//       groups[streetNumber] = [];
+//     }
+//     groups[streetNumber].push(data[i]);
+//   }
+//   const sortedGroups = {};
+//   Object.keys(groups).sort((a, b) => a - b).forEach(key => {
+//     sortedGroups[key] = groups[key];
+//   });
+//   return sortedGroups;
+// }
 
 
 
@@ -124,7 +118,11 @@ function groupDataByOwner(results) {
     if (!row.owner) { // check if owner field is null or undefined
       continue; // skip this row
     }
-    const firstName = row.owner.split(",")[1]?.trim(); // use optional chaining to avoid error if split() returns undefined
+    const commaIndex = row.owner.indexOf(",");
+    if (commaIndex === -1) { // check if comma is not found in owner field
+      continue; // skip this row
+    }
+    const firstName = row.owner.substring(commaIndex + 1).trim();
     if (!firstName) {
       continue; // skip this row if firstName is null, undefined or an empty string
     }
@@ -133,28 +131,15 @@ function groupDataByOwner(results) {
     }
     data[firstName].push(row);
   }
-  return data;
+  // sort the keys in alphabetical order
+  const sortedKeys = Object.keys(data).sort();
+  const sortedData = {};
+  for (let i = 0; i < sortedKeys.length; i++) {
+    const key = sortedKeys[i];
+    sortedData[key] = data[key];
+  }
+  return sortedData;
 }
-
-
-// app.get('/firstname', function(req, res){
-//   connection.query('SELECT * FROM mytable ORDER BY owner', function(error, results, fields){
-//       if (error) throw error;
-//       var data = groupDataByOwner(results);
-//       console.log(data); // add this line to see what data is being passed to the template
-//       res.render('firstname', { data });
-//   });
-// });
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -11,7 +11,7 @@
      <button type="button" id="streetname-button" class="btn btn-primary btn-lg btn-block">Sort Data By Street Name</button>
     <button type="button" class="btn btn-primary btn-lg btn-block">Sort Data By First Name</button>
     <button type="button" id="home-button" class="btn btn-primary btn-lg btn-block">Home</button>
-    
+
     <table class="table table-striped">
       <thead>
 			<tr>
@@ -26,9 +26,9 @@
 		</thead>
 		<tbody>
 			{{#each data}}
+            {{#each this}}
+
 			<tr>
-			
-				
 				<td>{{this.pin}}</td>
                 <td>{{this.address}}</td>
 				<td>{{this.owner}}</td>
@@ -38,6 +38,7 @@
 				<td>{{this.link}}</td>
 			</tr>
 			{{/each}}
+            {{/each}}
 		</tbody>
 	</table>
   </div>
