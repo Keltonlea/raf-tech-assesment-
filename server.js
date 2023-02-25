@@ -3,7 +3,7 @@ const mysql = require('mysql2');
 const { engine } = require('express-handlebars');
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('database_name', 'username', 'password', {
+const sequelize = new Sequelize('parcel_db', 'root', 'Carmel360', {
   host: 'localhost',
   dialect: 'mysql',
 });
