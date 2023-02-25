@@ -1,17 +1,8 @@
 const express = require('express');
 const mysql = require('mysql2');
 const { engine } = require('express-handlebars');
-const sequelize = require('./config/connection');
 
 
-
-sequelize.sync()
-  .then(() => {
-    console.log('Database synced');
-  })
-  .catch(err => {
-    console.error('Error syncing database', err);
-  });
 
 const app = express();
 
