@@ -3,6 +3,9 @@
 ## Description 
 This is a full-stack web application that lets users sort and view data in a table format. The user can sort the data by street name or first name, and click on a link to view each address in Google Maps.
 
+![Screenshot of search results](./assets/images/parcelscreenshot.png)
+![Screenshot of search results](./assets/images/parcelscreenshot2.png)
+
 ## Table of Contents
 * [Installation](#installation)
 * [Tech](#Tech)
@@ -22,13 +25,6 @@ Express.js
 MySQL
 Bootstrap
 Google Maps API
-
-
-
-![Screenshot of search results](./assets/images/parcelscreenshot.png)
-![Screenshot of search results](./assets/images/parcelscreenshot2.png)
-
-
 
 
 ## Contributing 

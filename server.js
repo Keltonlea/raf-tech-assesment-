@@ -2,8 +2,6 @@ const express = require('express');
 const mysql = require('mysql2');
 const { engine } = require('express-handlebars');
 
-
-
 const app = express();
 
 const PORT = process.env.PORT || 3000;
@@ -13,9 +11,6 @@ app.use(express.static('public'));
 
 
 //Create a connection to the mysql server
-
-
-
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
