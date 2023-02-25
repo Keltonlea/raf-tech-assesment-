@@ -1,7 +1,7 @@
 # Parcel Data Sorter
 
 ## Description 
-This is a full-stack web application that lets users sort and view data in a table format. The user can sort the data by street name or first name, and click on a link to view each address in Google Maps.
+This is a full-stack web application using a MVC paradigm that lets users sort and view data in a table format. The user can sort the data by street name or first name, and click on a link to view each address in Google Maps.
 
 ![Screenshot of search results](./assets/images/parcelscreenshot.png)
 ![Screenshot of search results](./assets/images/parcelscreenshot2.png)
