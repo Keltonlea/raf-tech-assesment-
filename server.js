@@ -5,7 +5,7 @@ const Sequelize = require('sequelize');
 
 const sequelize = new Sequelize('parcel_db', 'root', 'Carmel360', {
   host: 'localhost',
-  dialect: 'mysql',
+  dialect: 'mysql2',
 });
 
 sequelize.authenticate()
