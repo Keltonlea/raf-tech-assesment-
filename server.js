@@ -1,21 +1,21 @@
 const express = require('express');
 const mysql = require('mysql2');
 const { engine } = require('express-handlebars');
-const Sequelize = require('sequelize');
+const sequelize = require('./config/connection');
 
-const sequelize = new Sequelize('parcel_db', 'root', 'Carmel360', {
-  host: 'localhost',
-  dialect: 'mysql',
-});
 
-sequelize.authenticate()
-  .then(() => console.log('Connection has been established successfully.'))
-  .catch(err => console.error('Unable to connect to the database:', err));
 
+sequelize.sync()
+  .then(() => {
+    console.log('Database synced');
+  })
+  .catch(err => {
+    console.error('Error syncing database', err);
+  });
 
 const app = express();
 
-const port = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.static('public'));
 
@@ -190,6 +190,11 @@ function groupDataByOwner(results) {
 
 
 // Start the server
-app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
+
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
 });
+
+
+
+
