@@ -1,8 +1,16 @@
 const express = require('express');
 const mysql = require('mysql2');
 const { engine } = require('express-handlebars');
+const Sequelize = require('sequelize');
 
+const sequelize = new Sequelize('database_name', 'username', 'password', {
+  host: 'localhost',
+  dialect: 'mysql',
+});
 
+sequelize.authenticate()
+  .then(() => console.log('Connection has been established successfully.'))
+  .catch(err => console.error('Unable to connect to the database:', err));
 
 
 const app = express();
