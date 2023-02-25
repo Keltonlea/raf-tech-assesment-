@@ -1,7 +1,7 @@
 # Parcel Data Sorter
 
 ## Description 
-This project is a full stack web application that allows a user can then click buttons to sort the data by street name or by first name. The user can also click a link within the table to view each address in googlemaps. 
+This is a full-stack web application that lets users sort and view data in a table format. The user can sort the data by street name or first name, and click on a link to view each address in Google Maps.
 
 ## Table of Contents
 * [Installation](#installation)
@@ -11,7 +11,7 @@ This project is a full stack web application that allows a user can then click b
 * [Questions](#questions)
 
 ## Installation 
-The user should fork the repository from GitHub and Install all dependecies with npm i. To run, source the schema and run npm start and go to locahost:3000 in a browser. 
+This application requires node.js. The user should fork the repository from GitHub and install all dependecies with npm i. To run, source the schema and run npm start and go to locahost:3000 in a browser. To view the database from MySQL, start the MySQL server by running the command `mysql -u <username> -p` and entering your password when prompted.
 
 ## Tech
 HTML
@@ -36,6 +36,8 @@ Contributors should read the installation section.
 
 ## Tests
 There are no tests for this application. 
+
+
 
 ## Questions
 If you have any questions about this projects, please contact me directly at kelton.leach@gmail.com. You can view more of my projects at https://github.com/keltonlea.
