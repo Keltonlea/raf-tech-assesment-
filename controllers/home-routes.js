@@ -4,34 +4,33 @@ const { engine } = require('express-handlebars');
 
 
 
-//Create a connection to the mysql server
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'Carmel360',
-    database: 'parcel_db'
-  });
+// Create a new MySQL connection pool using environment variables
+const pool = mysql.createPool({
+  connectionLimit : 10,
+  user            : process.env.DB_USER,
+  password        : process.env.DB_PASSWORD,
+  database        : process.env.DB_NAME
+});
 
 
 // Render the home page with the parcel data
 router.get('/', (req, res) => {
-    connection.query('SELECT * FROM mytable', (error, results, fields) => {
-      if (error) {
-        console.error('Error retrieving data from database: ' + error.stack);
-        res.status(500).send('Internal server error');
-        return;
-      }
-      // Add maplink column to the result
-      const parcels = results.map((parcel) => {
-        const address = parcel.address;
-        const api_key = 'AIzaSyBitp-D5fzf3sFeHVQ8idSV62EFjf6y5AM'
-        const maplink = `https://www.google.com/maps/embed/v1/place?key=${api_key}&q=${address}, Mazama, WA`
-        return { ...parcel, maplink};
-      });
-      res.render('home', {parcels});
+  pool.query('SELECT * FROM mytable', (error, results, fields) => {
+    if (error) {
+      console.error('Error retrieving data from database: ' + error.stack);
+      res.status(500).send('Internal server error');
+      return;
+    }
+    // Add maplink column to the result
+    const parcels = results.map((parcel) => {
+      const address = parcel.address;
+      const api_key = 'AIzaSyBitp-D5fzf3sFeHVQ8idSV62EFjf6y5AM'
+      const maplink = `https://www.google.com/maps/embed/v1/place?key=${api_key}&q=${address}, Mazama, WA`
+      return { ...parcel, maplink};
     });
+    res.render('home', {parcels});
   });
-
+});
 
   router.get('/map', (req, res) => {
     const address = req.query.address;
@@ -41,14 +40,28 @@ router.get('/', (req, res) => {
     res.render('map', { maplink });
   });
 
-  // Render table by street name 
-router.get('/streetname', function(req, res){
-    connection.query('SELECT * FROM mytable ORDER BY address', function(error, results, fields){
-        if (error) throw error;
+//   // Render table by street name 
+  router.get('/streetname', function(req, res) {
+    pool.getConnection((err, connection) => {
+      if (err) {
+        console.error('Error connecting to database: ' + err.stack);
+        res.status(500).send('Internal server error');
+        return;
+      }
+  
+      connection.query('SELECT * FROM mytable ORDER BY address', function(error, results, fields){
+        connection.release();
+  
+        if (error) {
+          console.error('Error retrieving data from database: ' + error.stack);
+          res.status(500).send('Internal server error');
+          return;
+        }
+  
         var data = groupDataByStreetName(results);
         res.render('streetname', { data });
+      });
     });
-    
   });
   
   function groupDataByStreetName(data) {
@@ -81,43 +94,32 @@ router.get('/streetname', function(req, res){
     return sortedData;
   }
 
-  // If we want to add street number, this renders not on the table, but can be changed to do so
 
-// app.get('/streetnumber', function(req, res){
-//   connection.query('SELECT * FROM mytable ORDER BY CAST(SUBSTRING_INDEX(address, " ", 1) AS UNSIGNED)', function(error, results, fields){
-//       if (error) throw error;
-//       var data = groupDataByStreetNumber(results);
-//       res.send(data);
-//   });
-// });
-
-// function groupDataByStreetNumber(data) {
-//   const groups = {};
-//   for (let i = 0; i < data.length; i++) {
-//     const address = data[i].address;
-//     if (!address) continue;
-//     const streetNumber = parseInt(address.split(' ')[0]);
-//     if (isNaN(streetNumber)) continue;
-//     if (!groups[streetNumber]) {
-//       groups[streetNumber] = [];
-//     }
-//     groups[streetNumber].push(data[i]);
-//   }
-//   const sortedGroups = {};
-//   Object.keys(groups).sort((a, b) => a - b).forEach(key => {
-//     sortedGroups[key] = groups[key];
-//   });
-//   return sortedGroups;
-// }
 
 // Render table to sort by first name 
 router.get('/firstname', function(req, res) {
+  pool.getConnection((err, connection) => {
+    if (err) {
+      console.error('Error connecting to database: ' + err.stack);
+      res.status(500).send('Internal server error');
+      return;
+    }
+
     connection.query('SELECT * FROM mytable ORDER BY owner', function(error, results, fields) {
-      if (error) throw error;
+      connection.release();
+
+      if (error) {
+        console.error('Error retrieving data from database: ' + error.stack);
+        res.status(500).send('Internal server error');
+        return;
+      }
+
       const data = groupDataByOwner(results);
-      res.render('firstname', {data: data}); // pass the data object to the view
+      res.render('firstname', {data: data});
     });
   });
+});
+
   
   function groupDataByOwner(results) {
     const data = {};

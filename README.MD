@@ -18,7 +18,21 @@ This is a full-stack web application using a MVC paradigm that lets users sort a
 
 
 ## Installation 
-This application requires node.js. The user should fork the repository from GitHub and install all dependecies with npm i. Login to mysql in the integrated terminal by typing in `mysql -u <username> -p`. Run SOURCE db/schema.sql; and then exit;. Type npm start, and then head to localhost:3001 in your browser to view.
+This application requires node.js.
+* The user should fork the repository from GitHub and install all dependecies with npm i.
+* Create a .env file with this information, in this order:
+DB_NAME= parcel_db
+DB_USER= 
+DB_PASSWORD=
+Or for the sake of this tech assessment, create a .env file and use my login:
+DB_NAME= parcel_db
+DB_USER= root
+DB_PASSWORD= Carmel360
+
+* Login into mysql in the integrated terminal by typing in `mysql -u <username> -p`. Run SOURCE db/schema.sql; and then exit;
+* Run npm start and head to localhost:3001 in your browser to view.
+
+
 
 View a demonstration video [Screencastify](https://drive.google.com/file/d/1UN645w912N2vT5in0DyoR10OAA_ibxQu/view)<br>
 
