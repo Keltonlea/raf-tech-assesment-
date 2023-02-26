@@ -1,11 +1,10 @@
 const router = require('express').Router();
 const mysql = require('mysql2');
 const { engine } = require('express-handlebars');
-const consoleTable = require('console.table');
 
 
 
-
+console.log("testing")
 //Create a connection to the mysql server
 const connection = mysql.createConnection({
     host: 'localhost',
