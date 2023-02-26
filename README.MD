@@ -16,8 +16,7 @@ This is a full-stack web application using a MVC paradigm that lets users sort a
 ## Installation 
 This application requires node.js. The user should fork the repository from GitHub and install all dependecies with npm i. To run, source the schema and run npm start and go to locahost:3000 in a browser. To view the database from MySQL, start the MySQL server by running the command `mysql -u <username> -p` and entering your password when prompted.
 
-Demonstration Videos
-View video to see MySQL walk through via [Screencastify](https://drive.google.com/file/d/1bxxJf_VcAajEm50h003KED-KlB7cOoV3/view)<br>
+View a demonstration video [Screencastify](https://drive.google.com/file/d/1bxxJf_VcAajEm50h003KED-KlB7cOoV3/view)<br>
 
 ## Tech
 HTML
