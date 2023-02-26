@@ -1,10 +1,9 @@
 const router = require('express').Router();
 const mysql = require('mysql2');
 const { engine } = require('express-handlebars');
+const sequelize = require('../config/connection');
 
 
-
-console.log("testing")
 //Create a connection to the mysql server
 const connection = mysql.createConnection({
     host: 'localhost',
