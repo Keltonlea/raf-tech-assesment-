@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const mysql = require('mysql2');
 const { engine } = require('express-handlebars');
-const sequelize = require('../config/connection');
+
 
 
 //Create a connection to the mysql server
@@ -31,6 +31,7 @@ router.get('/', (req, res) => {
       res.render('home', {parcels});
     });
   });
+
 
   router.get('/map', (req, res) => {
     const address = req.query.address;
