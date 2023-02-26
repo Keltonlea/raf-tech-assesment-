@@ -2,7 +2,7 @@
 
 
 ## Table of Contents
-* [Description]git p(#Description)
+* [Description](#Description)
 * [Installation](#installation)
 * [Tech](#Tech)
 * [Contributing](#contributing)
