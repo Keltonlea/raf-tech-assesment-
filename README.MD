@@ -28,13 +28,7 @@ DB_USER=
 
 DB_PASSWORD=
 
-Or for the sake of this tech assessment, create a .env file and use my login:
 
-DB_NAME= parcel_db
-
-DB_USER= root
-
-DB_PASSWORD= Carmel360
 
 * Login into mysql in the integrated terminal by typing in `mysql -u <username> -p`. Run SOURCE db/schema.sql; and then exit;
 * Run npm start and head to localhost:3001 in your browser to view.
